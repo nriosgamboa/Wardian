@@ -170,17 +170,6 @@
       word-break: break-all;
     }
 
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 12px;
-    }
-
-    .col {
-      flex: 1 1 260px;
-    }
-
     .error {
       margin-top: 4px;
       font-size: .78rem;
@@ -221,85 +210,40 @@
   <div class="card">
     <h2>1. Capa Wardian I · Coordenadas</h2>
     <p class="section-desc">
-      En esta capa se encriptan letras y números usando coordenadas de teclado (incluye mayúsculas y dígitos codificados con M y N).
+      Usa coordenadas de teclado para encriptar letras y números (incluye mayúsculas y dígitos codificados con M y N).
     </p>
 
-    <!-- Encriptar Capa I -->
-    <label for="input-original">Texto original</label>
-    <input id="input-original" placeholder="Ejemplo: Nicolas7">
-    <div id="error-encrypt" class="error"></div>
+    <label for="capa1-input">Texto o código de Capa I</label>
+    <input id="capa1-input" placeholder="Ejemplo: Nicolas7 o M36183319292122N27">
+    <div id="capa1-error" class="error"></div>
 
     <div class="button-row">
-      <button id="btn-encrypt1">Encriptar Capa I</button>
+      <button id="btn-capa1-encrypt">Encriptar Capa I</button>
+      <button id="btn-capa1-decrypt" class="secondary">Desencriptar Capa I</button>
     </div>
 
-    <label style="margin-top:12px;">Resultado Capa I (coordenadas)</label>
-    <div id="output-s1" class="output"></div>
-
-    <hr style="margin:18px 0; border:none; border-top:1px solid var(--border-soft);">
-
-    <!-- Desencriptar Capa I -->
-    <h3 style="margin:0 0 4px; font-size:.95rem;">Desencriptar Capa I</h3>
-    <p class="section-desc">
-      Ingresa un código generado por la Capa I (con dígitos, M y N) para recuperar el texto original.
-    </p>
-
-    <label for="input-s1-decrypt">Código Capa I</label>
-    <textarea id="input-s1-decrypt" placeholder="Ejemplo: M36183319292122N27"></textarea>
-    <div id="error-decrypt-s1" class="error"></div>
-    <div class="button-row">
-      <button id="btn-decrypt-s1" class="secondary">Desencriptar Capa I</button>
-    </div>
-
-    <label style="margin-top:12px;">Texto original reconstruido</label>
-    <div id="output-s1-decoded" class="output"></div>
+    <label style="margin-top:12px;">Resultado Capa I</label>
+    <div id="capa1-output" class="output"></div>
   </div>
 
   <!-- ================= Capa II ================= -->
   <div class="card">
     <h2>2. Capa Wardian II · ASCII + 5</h2>
     <p class="section-desc">
-      Esta capa trabaja sobre el código de la Capa I. Cada carácter se transforma a su código ASCII, se le suma 5 y se concatena en una cadena de números.
+      Trabaja sobre el código de la Capa I. Cada carácter se transforma a su código ASCII, se le suma 5 y se concatenan los resultados.
     </p>
 
-    <!-- Encriptar Capa II -->
-    <h3 style="margin:0 0 4px; font-size:.95rem;">Encriptar con Capa II</h3>
-    <p class="section-desc">
-      Ingresa un código de la Capa I para obtener su versión en la Capa II.
-    </p>
-
-    <label for="input-s1-to-s2">Código Capa I</label>
-    <textarea id="input-s1-to-s2" placeholder="Ejemplo: M36183319292122N27"></textarea>
-    <div id="error-s1-to-s2" class="error"></div>
+    <label for="capa2-input">Código Capa I o Capa II</label>
+    <textarea id="capa2-input" placeholder="Ejemplo: M36183319292122N27 o 8256595461656564625652555455555560"></textarea>
+    <div id="capa2-error" class="error"></div>
 
     <div class="button-row">
-      <button id="btn-s1-to-s2">Encriptar Capa II</button>
+      <button id="btn-capa2-encrypt">Encriptar Capa II</button>
+      <button id="btn-capa2-decrypt" class="secondary">Desencriptar Capa II</button>
     </div>
 
-    <label style="margin-top:12px;">Resultado Capa II (solo números)</label>
-    <div id="output-s1to2" class="output"></div>
-
-    <hr style="margin:18px 0; border:none; border-top:1px solid var(--border-soft);">
-
-    <!-- Desencriptar Capa II -->
-    <h3 style="margin:0 0 4px; font-size:.95rem;">Desencriptar Capa II</h3>
-    <p class="section-desc">
-      Ingresa un código numérico de la Capa II para obtener primero el código intermedio de la Capa I y luego el texto original.
-    </p>
-
-    <label for="input-s2-decrypt">Código Capa II</label>
-    <textarea id="input-s2-decrypt" placeholder="Ejemplo: 8256595461656564625652555455555560"></textarea>
-    <div id="error-decrypt-s2" class="error"></div>
-
-    <div class="button-row">
-      <button id="btn-decrypt-s2" class="secondary">Desencriptar Capa II</button>
-    </div>
-
-    <label style="margin-top:12px;">Resultado intermedio (Capa I)</label>
-    <div id="output-s2-to-s1" class="output"></div>
-
-    <label style="margin-top:12px;">Texto original reconstruido</label>
-    <div id="output-s2-decoded" class="output"></div>
+    <label style="margin-top:12px;">Resultado Capa II</label>
+    <div id="capa2-output" class="output"></div>
   </div>
 
   <div class="card">
@@ -347,6 +291,11 @@
     return true;
   }
 
+  function esCodigoCapa1Valido(codigo) {
+    if (!codigo.length) return false;
+    return /^[0-9MN]+$/.test(codigo);
+  }
+
   // ======== Capa I: Encriptar ========
   function encriptarCapa1(texto) {
     let resultado = "";
@@ -371,11 +320,6 @@
   }
 
   // ======== Capa I: Desencriptar ========
-  function esCodigoCapa1Valido(codigo) {
-    if (!codigo.length) return false;
-    return /^[0-9MN]+$/.test(codigo);
-  }
-
   function desencriptarCapa1(codigo) {
     let resultado = "";
     let i = 0;
@@ -435,98 +379,89 @@
     return s1;
   }
 
-  // ======== Enlaces UI Capa I ========
-  const inputOriginal = document.getElementById("input-original");
-  const outputS1 = document.getElementById("output-s1");
-  const errorEncrypt = document.getElementById("error-encrypt");
+  // ======== UI Capa I ========
+  const capa1Input  = document.getElementById("capa1-input");
+  const capa1Error  = document.getElementById("capa1-error");
+  const capa1Output = document.getElementById("capa1-output");
 
-  document.getElementById("btn-encrypt1").addEventListener("click", () => {
-    errorEncrypt.textContent = "";
-    outputS1.textContent = "";
-    const txt = inputOriginal.value.trim();
-    if (!esTextoValido(txt)) {
-      errorEncrypt.textContent =
+  document.getElementById("btn-capa1-encrypt").addEventListener("click", () => {
+    capa1Error.textContent = "";
+    capa1Output.textContent = "";
+    const valor = capa1Input.value.trim();
+
+    if (!esTextoValido(valor)) {
+      capa1Error.textContent =
         "Entrada no válida. Usa entre 1 y 10 caracteres, solo letras y números, sin espacios.";
       return;
     }
     try {
-      const capa1 = encriptarCapa1(txt);
-      outputS1.textContent = capa1;
-      outputS1.style.color = "#e5e7eb";
+      const codigo = encriptarCapa1(valor);
+      capa1Output.textContent = codigo;
+      capa1Output.style.color = "#e5e7eb";
     } catch (e) {
-      errorEncrypt.textContent = e.message;
+      capa1Error.textContent = e.message;
     }
   });
 
-  // Desencriptar Capa I
-  const inputS1Decrypt = document.getElementById("input-s1-decrypt");
-  const btnDecryptS1 = document.getElementById("btn-decrypt-s1");
-  const outputS1Decoded = document.getElementById("output-s1-decoded");
-  const errorDecryptS1 = document.getElementById("error-decrypt-s1");
+  document.getElementById("btn-capa1-decrypt").addEventListener("click", () => {
+    capa1Error.textContent = "";
+    capa1Output.textContent = "";
+    const valor = capa1Input.value.trim();
 
-  btnDecryptS1.addEventListener("click", () => {
-    errorDecryptS1.textContent = "";
-    outputS1Decoded.textContent = "";
-    const codigo = inputS1Decrypt.value.trim();
-    if (!esCodigoCapa1Valido(codigo)) {
-      errorDecryptS1.textContent = "Código inválido.";
+    if (!esCodigoCapa1Valido(valor)) {
+      capa1Error.textContent = "Para desencriptar, ingresa un código válido de Capa I (solo dígitos y M/N).";
       return;
     }
     try {
-      const original = desencriptarCapa1(codigo);
-      outputS1Decoded.textContent = original;
-      outputS1Decoded.style.color = "#e5e7eb";
+      const texto = desencriptarCapa1(valor);
+      capa1Output.textContent = texto;
+      capa1Output.style.color = "#e5e7eb";
     } catch (e) {
-      errorDecryptS1.textContent = e.message;
+      capa1Error.textContent = e.message;
     }
   });
 
-  // ======== Enlaces UI Capa II ========
-  const inputS1ToS2 = document.getElementById("input-s1-to-s2");
-  const errorS1ToS2 = document.getElementById("error-s1-to-s2");
-  const outputS1To2 = document.getElementById("output-s1to2");
-  document.getElementById("btn-s1-to-s2").addEventListener("click", () => {
-    errorS1ToS2.textContent = "";
-    outputS1To2.textContent = "";
-    const codigo = inputS1ToS2.value.trim();
-    if (!esCodigoCapa1Valido(codigo)) {
-      errorS1ToS2.textContent = "Código de Capa I inválido.";
+  // ======== UI Capa II ========
+  const capa2Input  = document.getElementById("capa2-input");
+  const capa2Error  = document.getElementById("capa2-error");
+  const capa2Output = document.getElementById("capa2-output");
+
+  document.getElementById("btn-capa2-encrypt").addEventListener("click", () => {
+    capa2Error.textContent = "";
+    capa2Output.textContent = "";
+    const valor = capa2Input.value.trim();
+
+    if (!esCodigoCapa1Valido(valor)) {
+      capa2Error.textContent =
+        "Para encriptar en Capa II, ingresa un código válido de Capa I (solo dígitos y M/N).";
       return;
     }
     try {
-      const capa2 = encriptarCapa2(codigo);
-      outputS1To2.textContent = capa2;
-      outputS1To2.style.color = "#e5e7eb";
+      const codigo2 = encriptarCapa2(valor);
+      capa2Output.textContent = codigo2;
+      capa2Output.style.color = "#e5e7eb";
     } catch (e) {
-      errorS1ToS2.textContent = e.message;
+      capa2Error.textContent = e.message;
     }
   });
 
-  // Desencriptar Capa II
-  const inputS2Decrypt = document.getElementById("input-s2-decrypt");
-  const btnDecryptS2 = document.getElementById("btn-decrypt-s2");
-  const outputS2ToS1 = document.getElementById("output-s2-to-s1");
-  const outputS2Decoded = document.getElementById("output-s2-decoded");
-  const errorDecryptS2 = document.getElementById("error-decrypt-s2");
+  document.getElementById("btn-capa2-decrypt").addEventListener("click", () => {
+    capa2Error.textContent = "";
+    capa2Output.textContent = "";
+    const valor = capa2Input.value.trim();
 
-  btnDecryptS2.addEventListener("click", () => {
-    errorDecryptS2.textContent = "";
-    outputS2ToS1.textContent = "";
-    outputS2Decoded.textContent = "";
-    const codigo = inputS2Decrypt.value.trim();
-    if (!codigo.length) {
-      errorDecryptS2.textContent = "Ingresa un código.";
+    if (!valor.length) {
+      capa2Error.textContent = "Ingresa un código numérico de Capa II.";
       return;
     }
     try {
-      const capa1 = desencriptarCapa2(codigo);
-      const original = desencriptarCapa1(capa1);
-      outputS2ToS1.textContent = capa1;
-      outputS2Decoded.textContent = original;
-      outputS2ToS1.style.color = "#e5e7eb";
-      outputS2Decoded.style.color = "#e5e7eb";
+      const capa1 = desencriptarCapa2(valor);
+      const texto = desencriptarCapa1(capa1);
+      capa2Output.innerHTML =
+        "Capa I: " + capa1 + "<br>Texto original: " + texto;
+      capa2Output.style.color = "#e5e7eb";
     } catch (e) {
-      errorDecryptS2.textContent = e.message;
+      capa2Error.textContent = e.message;
     }
   });
 </script>
